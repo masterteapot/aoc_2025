@@ -20,7 +20,7 @@ let calc (loc, counter) num =
   in
   match new_loc with
   | 0 -> 0, counter + 1
-  | new_curr -> new_curr, counter
+  | nl -> nl, counter
 ;;
 
 let calc_v2 (loc, counter) num =
