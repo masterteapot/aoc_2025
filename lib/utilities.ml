@@ -26,7 +26,7 @@ module Matrix = struct
     | _ -> a
   ;;
 
-  let is_valid m f (x, y) = f m (x, y)
+  let is_valid m f c = f m c
   let iteri m f = Array.iteri (fun y row -> Array.iteri (fun x _ -> f (x, y)) row) m
 
   let fold_left f a m =

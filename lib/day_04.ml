@@ -11,7 +11,7 @@ let parse arr y s =
     s
 ;;
 
-let reachable m c =
+let is_reachable m c =
   match Matrix.get m c with
   | 1 ->
     let num_rolls =
@@ -23,7 +23,7 @@ let reachable m c =
 
 let move_all_the_things m =
   let move_thing a c =
-    match reachable m c with
+    match is_reachable m c with
     | true ->
       Matrix.put m c 0;
       a + 1
@@ -32,10 +32,7 @@ let move_all_the_things m =
   let rec aux acc =
     match Matrix.fold_left move_thing 0 m with
     | 0 -> acc
-    | n ->
-      Matrix.print m "%d ";
-      Unix.sleepf 0.3;
-      aux (acc + n)
+    | n -> aux (acc + n)
   in
   aux 0
 ;;
@@ -47,7 +44,7 @@ let part_1 () =
   let height = List.length raw in
   let arr = Matrix.make ~width ~height ~f:(fun _ _ -> 0) in
   List.iteri (parse arr) raw;
-  let res = Matrix.count arr reachable in
+  let res = Matrix.count arr is_reachable in
   printf "%d\n" res
 ;;
 
