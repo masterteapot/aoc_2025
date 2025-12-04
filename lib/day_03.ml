@@ -13,17 +13,17 @@ module Part_1 = struct
     let highest_jolts = [| [| 0; 0 |]; [| 0; 0 |] |] in
     let len = String.length s in
     let rec aux i =
-      if i >= len then
-        ()
+      if i >= len
+      then ()
       else (
         let x = [| i; char_num_zeroed @@ s.[i] |] in
-        if cmp x highest_jolts.(0) > 0 && i < len - 1 then (
+        if cmp x highest_jolts.(0) > 0 && i < len - 1
+        then (
           highest_jolts.(0) <- x;
           highest_jolts.(1) <- [| 0; 0 |])
-        else if cmp x highest_jolts.(1) > 0 then
-          highest_jolts.(1) <- x
-        else
-          ();
+        else if cmp x highest_jolts.(1) > 0
+        then highest_jolts.(1) <- x
+        else ();
         aux (i + 1))
     in
     aux 0;
@@ -48,10 +48,10 @@ module Part_2 = struct
     let highest_jolts = Array.make num [| 0; 0 |] in
     let len = String.length s in
     let rec aux str_i hj_i =
-      if hj_i >= num then
-        ()
-      else if len - str_i <= num - hj_i - 1 then
-        aux (highest_jolts.(hj_i).(0) + 1) (hj_i + 1)
+      if hj_i >= num
+      then ()
+      else if len - str_i <= num - hj_i - 1
+      then aux (highest_jolts.(hj_i).(0) + 1) (hj_i + 1)
       else (
         let x = [| str_i; char_num_zeroed @@ s.[str_i] |] in
         (match cmp x highest_jolts.(hj_i) with

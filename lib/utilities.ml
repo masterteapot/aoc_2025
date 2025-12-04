@@ -1,6 +1,95 @@
 open Batteries
 open Printf
 
+module Matrix = struct
+  let make ~width ~height ~f =
+    Array.init height (fun y -> Array.init width (fun x -> f x y))
+  ;;
+
+  let get m (x, y) = m.(y).(x)
+
+  let in_matrix m (x, y) =
+    match m.(y).(x) with
+    | exception _ -> false
+    | _ -> true
+  ;;
+
+  let get_opt m (x, y) =
+    match in_matrix m (x, y) with
+    | true -> Some m.(y).(x)
+    | _ -> None
+  ;;
+
+  let in_matrix_filter m a c =
+    match get_opt m c with
+    | Some v -> v :: a
+    | _ -> a
+  ;;
+
+  let is_valid m f (x, y) = f m (x, y)
+  let iteri m f = Array.iteri (fun y row -> Array.iteri (fun x _ -> f (x, y)) row) m
+
+  let fold_left f a m =
+    Array.fold_lefti
+      (fun yacc y row -> Array.fold_lefti (fun xacc x _ -> f xacc (x, y)) yacc row)
+      a
+      m
+  ;;
+
+  let count m f =
+    Array.fold_lefti
+      (fun acc y row ->
+         Array.fold_lefti
+           (fun inacc x _ ->
+              if is_valid m f (x, y) then
+                inacc + 1
+              else
+                inacc)
+           acc
+           row)
+      0
+      m
+  ;;
+
+  let put m (x, y) v = m.(y).(x) <- v
+  let up (x, y) = x, y - 1
+  let right (x, y) = x + 1, y
+  let down (x, y) = x, y + 1
+  let left (x, y) = x - 1, y
+  let up_right (x, y) = x + 1, y - 1
+  let down_right (x, y) = x + 1, y + 1
+  let down_left (x, y) = x - 1, y + 1
+  let up_left (x, y) = x - 1, y - 1
+  let up_v m c = up c |> get m
+  let right_v m c = right c |> get m
+  let down_v m c = down c |> get m
+  let left_v m c = left c |> get m
+  let up_right_v m c = up_right c |> get m
+  let down_right_v m c = down_right c |> get m
+  let down_left_v m c = down_left c |> get m
+  let up_left_v m c = up_left c |> get m
+  let corners c = [ up_right c; down_right c; down_left c; up_left c ]
+  let corners_v m c = [ up_right_v m c; down_right_v m c; down_left_v m c; up_left_v m c ]
+  let sides c = [ up c; right c; down c; left c ]
+  let sides_v m c = [ up_v m c; right_v m c; down_v m c; left_v m c ]
+  let corners_in_matrix m c = corners c |> List.fold_left (in_matrix_filter m) []
+  let sides_in_matrix m c = sides c |> List.fold_left (in_matrix_filter m) []
+  let surrounding c = corners c @ sides c
+  let surrounding_v m c = corners_v m c @ sides_v m c
+
+  let surrounding_in_matrix m c =
+    corners c @ sides c |> List.fold_left (in_matrix_filter m) []
+  ;;
+
+  let print m s =
+    Array.iter
+      (fun r ->
+         Array.iter (printf s) r;
+         print_newline ())
+      m
+  ;;
+end
+
 (** Returns the first half of a string. In the case of an odd length string it will return half rounded down.*)
 let first_half_of_string s =
   let len = String.length s in
