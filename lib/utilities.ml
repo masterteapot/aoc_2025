@@ -115,8 +115,8 @@ let sum_int_list ls = List.fold_left ( + ) 0 ls
 
 let group_on_newline ls =
   let rec aux iacc acc = function
-    | [] -> List.rev (iacc :: acc)
-    | "" :: tl -> aux [] (iacc :: acc) tl
+    | [] -> List.rev (List.rev iacc :: acc)
+    | "" :: tl -> aux [] (List.rev iacc :: acc) tl
     | hd :: tl -> aux (hd :: iacc) acc tl
   in
   aux [] [] ls
