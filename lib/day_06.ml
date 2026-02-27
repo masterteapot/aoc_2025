@@ -11,11 +11,15 @@ module P1 = struct
     let len = String.length s in
     let rec aux acc sacc i =
       if i >= len then (
-        match sacc with
+        match
+          sacc
+        with
         | "" -> List.rev acc
         | s -> List.rev (Int.of_string s :: acc))
       else (
-        match s.[i] with
+        match
+          s.[i]
+        with
         | ' ' when String.length sacc > 0 -> aux (Int.of_string sacc :: acc) "" (i + 1)
         | ' ' -> aux acc sacc (i + 1)
         | '0' .. '9' as c -> aux acc (sacc ^ String.of_char c) (i + 1)
@@ -30,7 +34,9 @@ module P1 = struct
       if i >= len then
         acc
       else (
-        match s.[i] with
+        match
+          s.[i]
+        with
         | ' ' -> aux acc (i + 1)
         | '+' -> aux (Add :: acc) (i + 1)
         | '*' -> aux (Multiply :: acc) (i + 1)
@@ -70,11 +76,15 @@ module P2 = struct
   let parse_nums_v2 ls =
     let rec aux inacc acc counter =
       if counter = -1 then (
-        match inacc with
+        match
+          inacc
+        with
         | [] -> List.rev acc
         | ls -> List.rev (List.rev ls :: acc))
       else (
-        match List.fold_left (cephalopod_num counter) "" ls with
+        match
+          List.fold_left (cephalopod_num counter) "" ls
+        with
         | "" -> aux [] (List.rev inacc :: acc) (counter - 1)
         | s -> aux (Int.of_string s :: inacc) acc (counter - 1))
     in

@@ -146,7 +146,13 @@ let char_num_oned c = char_num_zeroed c + 1
 let rec string_of_list ~sep = function
   | [] -> ""
   | [ s ] -> s
-  | s :: tl -> string_of_list ~sep tl ^ sep ^ s
+  | s :: tl -> s ^ sep ^ string_of_list ~sep tl
+;;
+
+let rec california_of_list ~sep = function
+  | [] -> ""
+  | [ s ] -> s ^ "?"
+  | s :: tl -> s ^ sep ^ california_of_list ~sep tl
 ;;
 
 let print_num_array arr =
