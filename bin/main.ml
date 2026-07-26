@@ -21,3 +21,4 @@ let () =
 (* Day_09.part_2 (); *)
 Day_10.part_1 ();
 Day_10.part_2 ();
+;;
