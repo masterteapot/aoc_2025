@@ -71,6 +71,7 @@ end
 let part_1 () =
   let raw = read_file "inputs/day_03.txt" in
   let input = List.map Part_1.parse raw |> List.map Part_1.find_joltage in
+  List.iter (printf "%d\n") input;
   printf "%d\n" (sum_int_list input)
 ;;
 
