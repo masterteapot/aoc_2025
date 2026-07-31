@@ -22,12 +22,13 @@ let parse s =
 let calc_area (ll, lr) (rl, rr) = (Int.abs (ll - rl) + 1) * (Int.abs (lr - rr) + 1)
 
 let calc arr =
-  assert (Array.length arr >= 2);
+  let arr_len = Array.length arr in
+  assert (arr_len >= 2);
   let max_area = ref min_int in
   let rec aux curr next =
-    if curr >= Array.length arr then
+    if curr >= arr_len then
       ()
-    else if next >= Array.length arr then
+    else if next >= arr_len then
       aux (curr + 1) (curr + 2)
     else (
       let () =
@@ -42,11 +43,12 @@ let calc arr =
 ;;
 
 let calc_v2 arr =
-  assert (Array.length arr >= 2);
+  let arr_len = Array.length arr in
+  assert (arr_len >= 2);
   let rec aux curr next ls =
-    if curr >= Array.length arr then
+    if curr >= arr_len then
       List.sort (fun (_, l) (_, r) -> Int.compare l r * -1) ls
-    else if next >= Array.length arr then
+    else if next >= arr_len then
       aux (curr + 1) (curr + 2) ls
     else (
       let cv = arr.(curr) in
@@ -69,6 +71,7 @@ let is_between_y b (_, y) = y > b.min_y && y < b.max_y
 let is_cross_x b line = line.min_x <= b.min_x && line.max_x >= b.max_x
 let is_cross_y b line = line.min_y <= b.min_y && line.max_y >= b.max_y
 
+(* TODO: doesn't handle all cases (9, 7) -> (2, 5) *)
 let no_intersections arr b =
   let rec aux i acc =
     if acc = false then
@@ -104,6 +107,5 @@ let part_1 () =
 let part_2 () =
   let arr = read_file "inputs/day_09.txt" |> List.map parse |> Array.of_list in
   let areas = calc_v2 arr |> List.filter (filter_area arr) in
-  (* let () = List.iter print_area areas in *)
   printf "%d\n" (snd @@ List.hd areas)
 ;;
